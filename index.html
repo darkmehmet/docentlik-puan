@@ -4,221 +4,248 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="ÜAK Tablo 10 (Sağlık Bilimleri) doçentlik puan hesaplayıcı">
+<meta name="theme-color" content="#a82c18">
 <title>Doçentlik Puan Hesabı</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* VOICE work: a careful score sheet for an academic dossier, calm and exact
-   IDEA the ÜAK puan cetveli as a ruled worksheet that totals itself
-   PICTURE the live total drawn large with two stacked bars (toplam → 100, uzmanlık sonrası → 90) and the eight mandatory conditions as ticked rows
-   COLOUR stone ground, white panels, black ink, brick red for what is still missing
-   TYPE Schibsted Grotesk 800 for figures and titles, Schibsted Grotesk for text
-   LAYOUT laptop: form left, result right in the first screen, ruled tables below; phone: title, result, form, with a slim sticky total */
-:root{color-scheme:light dark;--bg:light-dark(#e7e4df,#171513);--panel:light-dark(#ffffff,#211e1b);--ink:light-dark(#141210,#eeeae4);--mute:light-dark(#5b5650,#a59f97);--line:light-dark(#d3cec6,#3a3632);--soft:light-dark(#f3f1ed,#2a2622);--brick:light-dark(#c8371e,#ef6a4c);--brick-soft:light-dark(#f6ddd6,#4a231b)}
+/* VOICE work tool, calm and exact, for one physician's dossier
+   IDEA a gown-red cover sheet on top of a clean ruled worksheet
+   PICTURE two concentric rings on the red band: outer = total toward 100, inner = post-specialty toward 90
+   COLOUR warm paper ground, white cards, ink text, academic brick red band and accent
+   TYPE Plus Jakarta Sans 800 for figures and titles, Plus Jakarta Sans for text
+   LAYOUT laptop: red band with title left and rings right, then form | conditions; phone: title, rings, conditions, form, cards */
+:root{color-scheme:light dark;--bg:light-dark(#f5f2ee,#131110);--panel:light-dark(#ffffff,#1e1b19);--ink:light-dark(#1c1917,#f1ece6);--mute:light-dark(#6b625b,#a99f97);--line:light-dark(#e7e1da,#34302c);--soft:light-dark(#f8f5f1,#272320);--brick:light-dark(#b8321d,#ff7d5e);--brick-soft:light-dark(#fbe7e1,#3d1f18);--ok:light-dark(#1c1917,#f1ece6);--hero1:light-dark(#b8321d,#8a2513);--hero2:light-dark(#7e1f10,#3f0f07);--shadow:light-dark(0 1px 2px rgba(60,30,20,.06),0 1px 2px rgba(0,0,0,.4))}
 :root[data-theme=light]{color-scheme:light}
 :root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
-html{scroll-padding-top:72px}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Schibsted Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip}
-.band{padding:clamp(20px,3vw,40px) max(4vw,16px)}
-.wrap{max-width:1240px;margin:0 auto}
-h1{font-size:clamp(32px,4.4vw,48px);line-height:1.05;letter-spacing:-.02em;margin:0;font-weight:800;text-wrap:balance}
-h2{font-size:24px;line-height:1.15;letter-spacing:-.01em;margin:0 0 12px;font-weight:800}
-h3{font-size:17px;margin:0 0 8px;font-weight:700}
-p{margin:0 0 10px}
-.sub{color:var(--mute);margin-top:8px;max-width:70ch}
-.head{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:16px}
-.status{font-size:14px;color:var(--mute);white-space:nowrap}
-.status b{color:var(--ink);font-weight:500}
-.first{display:grid;gap:20px;grid-template-columns:minmax(0,1fr);grid-template-areas:"res" "form";margin-top:20px}
-@media(min-width:900px){.first{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);grid-template-areas:"form res";align-items:start}}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:clamp(16px,2.2vw,26px)}
-.res{grid-area:res}
-.form{grid-area:form}
-@media(min-width:900px){.res{position:sticky;top:16px}}
-.big{display:flex;flex-wrap:wrap;gap:8px 28px;align-items:baseline}
-.num{font-size:clamp(56px,8vw,84px);font-weight:800;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.num small{font-size:24px;color:var(--mute);font-weight:500;letter-spacing:0}
-.num2{font-size:32px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.num2 small{font-size:17px;color:var(--mute);font-weight:500}
-.lab{font-size:14px;color:var(--mute);margin-bottom:4px}
-.verdict{margin:14px 0 4px;font-weight:700}
+html{scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:clip;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(4vw,16px)}
+h1{font-size:clamp(30px,4.6vw,48px);line-height:1.05;letter-spacing:-.025em;margin:0;font-weight:800;text-wrap:balance}
+h2{font-size:22px;line-height:1.2;letter-spacing:-.01em;margin:0;font-weight:800}
+p{margin:0}
+.num{font-variant-numeric:lining-nums;white-space:nowrap}
+
+.hero{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;padding:clamp(26px,4vw,48px) 0 clamp(70px,8vw,96px)}
+.hero .wrap{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);align-items:center}
+@media(min-width:760px){.hero .wrap{grid-template-columns:minmax(0,1fr) auto}}
+.hero .sub{color:rgba(255,255,255,.82);margin-top:12px;max-width:58ch}
+.status{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:14px;background:rgba(255,255,255,.14);padding:6px 12px;border-radius:99px;color:#fff}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:#9ff0b8}
+.status.warn::before{background:#ffd36b}
+.ringbox{display:flex;align-items:center;gap:22px;justify-self:center}
+.ring{width:clamp(180px,26vw,220px);aspect-ratio:1;position:relative;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-linecap:round;transition:stroke-dasharray .6s ease}
+.ring .c{position:absolute;inset:0;display:grid;place-content:center;text-align:center;line-height:1.05}
+.ring .t{font-size:clamp(40px,6vw,52px);font-weight:800;letter-spacing:-.03em}
+.ring .t small{font-size:16px;font-weight:600;opacity:.75;letter-spacing:0}
+.ring .l{font-size:13px;opacity:.85;margin-top:4px}
+.keys{display:grid;gap:12px;font-size:14px}
+.keys b{display:block;font-size:22px;font-weight:800;letter-spacing:-.01em}
+.keys span{opacity:.85}
+.keys i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:1px}
+@media(max-width:420px){.ringbox{flex-direction:column;gap:14px}.keys{grid-template-columns:1fr 1fr;text-align:center}}
+
+.mini{position:fixed;top:0;left:0;right:0;z-index:20;background:var(--hero2);color:#fff;font-size:14px;padding:9px max(4vw,16px);display:flex;gap:6px 16px;flex-wrap:wrap;justify-content:center;transform:translateY(-110%);transition:transform .25s ease;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.mini.on{transform:none}
+.mini span{white-space:nowrap}
+.mini b{font-weight:800}
+
+main{margin-top:calc(-1 * clamp(50px,6vw,70px));position:relative}
+.grid{display:grid;gap:18px;grid-template-columns:minmax(0,1fr);grid-template-areas:"res" "form"}
+@media(min-width:900px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"form res";align-items:start}.res{position:sticky;top:60px}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,2.4vw,26px);box-shadow:var(--shadow)}
+.res{grid-area:res}.form{grid-area:form}
+.sec{margin-top:18px}
+.head{display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.hint{font-size:14px;color:var(--mute);margin-top:6px}
+
+.verdict{font-weight:700;margin-bottom:6px}
 .verdict.no{color:var(--brick)}
-.barbox{margin-top:16px}
-.barhead{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);gap:8px}
-.bar{position:relative;height:30px;background:var(--soft);border:1px solid var(--line);border-radius:3px;display:flex;overflow:hidden;margin-top:4px}
-.bar i{display:block;height:100%;border-right:1px solid var(--panel);transition:width .35s ease}
-.bar .tick{position:absolute;top:-1px;bottom:-1px;width:0;border-left:2px dashed var(--ink)}
-.scale{position:relative;height:18px;font-size:13px;color:var(--mute)}
-.scale span{position:absolute;transform:translateX(-50%);white-space:nowrap}
-.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;font-size:14px}
-.legend span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-.legend em{width:12px;height:12px;border-radius:2px;display:inline-block}
-.reqs{list-style:none;padding:0;margin:18px 0 0;border-top:1px solid var(--line)}
-.reqs li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:2px 10px;align-items:start;padding:9px 0;border-bottom:1px solid var(--line)}
-.mk{width:22px;height:22px;border-radius:50%;border:2px solid var(--brick);margin-top:1px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--brick)}
-.ok .mk{background:var(--ink);border-color:var(--ink);color:var(--panel)}
-.rq b{font-weight:700}
+.reqs{list-style:none;padding:0;margin:10px 0 0}
+.reqs li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:2px 12px;padding:11px 0;border-top:1px solid var(--line)}
+.mk{width:24px;height:24px;border-radius:50%;border:2px solid var(--brick);display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--brick);margin-top:1px}
+.ok .mk{background:var(--ok);border-color:var(--ok);color:var(--panel)}
+.rq b{font-weight:700;font-size:15px}
 .rq div{font-size:14px;color:var(--mute)}
-.ok .rq div{color:var(--mute)}
 .no .rq div{color:var(--brick)}
-.rv{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
-.meter{grid-column:2/4;height:5px;background:var(--soft);border-radius:3px;overflow:hidden}
-.meter i{display:block;height:100%;background:var(--brick)}
-.ok .meter i{background:var(--ink)}
-label{display:block;font-size:14px;font-weight:500;margin:14px 0 5px}
-select,input[type=text],input[type=number]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid color-mix(in srgb,var(--ink) 35%,transparent);border-radius:4px;padding:10px 12px;min-height:44px}
-select:focus,input:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--brick) 55%,transparent);outline-offset:1px}
-.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 14px}
-.seg{display:flex;flex-wrap:wrap;gap:6px}
-.seg button{flex:1 1 auto}
-button{font:inherit;font-size:15px;min-height:44px;padding:8px 14px;border-radius:4px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer}
-button:hover{background:var(--soft)}
-button[aria-pressed=true]{background:var(--ink);color:var(--panel)}
-button.pri{background:var(--brick);border-color:var(--brick);color:#fff;font-weight:700}
-button.pri:hover{filter:brightness(.93)}
-button.q{border-color:transparent;background:transparent;text-decoration:underline;text-underline-offset:3px;padding:8px 6px}
-.chk{display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-size:15px;cursor:pointer}
-.chk input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--ink);flex:none}
-.hint{font-size:14px;color:var(--mute);margin-top:5px}
-.preview{margin-top:18px;padding:14px 16px;border-radius:4px;background:var(--soft);border-left:4px solid var(--brick);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
-.preview .pv{font-size:36px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
-.preview .pf{font-size:14px;color:var(--mute)}
-.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.note{background:var(--brick-soft);border-radius:4px;padding:10px 14px;font-size:14px;margin-top:12px}
-.samplebar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;background:var(--brick-soft);padding:10px 14px;border-radius:4px;margin-bottom:12px;font-size:15px}
+.meter{grid-column:2;height:6px;background:var(--soft);border-radius:9px;overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--brick);border-radius:9px}
+.ok .meter i{background:var(--ok)}
+.barlab{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);margin-top:18px}
+.bar{height:14px;background:var(--soft);border-radius:9px;display:flex;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;transition:width .4s ease}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:13px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend em{width:10px;height:10px;border-radius:3px}
+.legend b{color:var(--ink);font-weight:700}
+
+label{display:block;font-size:14px;font-weight:600;margin:16px 0 6px}
+select,input[type=text],input[type=number]{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;min-height:46px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:34px}
+select:focus,input:focus,button:focus-visible{outline:3px solid color-mix(in srgb,var(--brick) 40%,transparent);outline-offset:1px;border-color:var(--brick)}
+.seg{display:flex;flex-wrap:wrap;gap:6px;background:var(--soft);padding:4px;border-radius:12px}
+.seg button{flex:1 1 auto;border:0;background:transparent;min-height:40px;border-radius:9px;font-weight:600;color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--panel);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+button{font:inherit;font-size:15px;min-height:44px;padding:8px 16px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;font-weight:600}
+button:hover{border-color:var(--mute)}
+button.pri{background:var(--brick);border-color:var(--brick);color:#fff}
+button.pri:hover{filter:brightness(.94)}
+button.q{border-color:transparent;background:transparent;color:var(--brick)}
+.chk{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:15px;cursor:pointer;font-weight:500}
+.chk input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--brick);flex:none}
+.preview{margin-top:18px;padding:14px 16px;border-radius:12px;background:var(--brick-soft);display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
+.preview .pv{font-size:34px;font-weight:800;line-height:1;letter-spacing:-.02em;color:var(--brick);white-space:nowrap}
+.preview .pf{font-size:14px;color:var(--ink);opacity:.85}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.note{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:14px;margin-top:14px;color:var(--mute)}
+
+.samplebar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:var(--brick-soft);padding:12px 14px;border-radius:12px;margin-bottom:14px;font-size:15px}
+.grp{margin-top:6px}
+.grph{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:14px 0 8px;border-bottom:2px solid var(--ink)}
+.grph b{font-size:16px}
+.grph .gp{font-weight:800;font-size:18px;white-space:nowrap}
+.grph .gp small{font-weight:600;font-size:13px;color:var(--brick);margin-left:6px}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.it-t{font-weight:700;overflow-wrap:anywhere}
+.it-m{font-size:14px;color:var(--mute);margin-top:2px}
+.it-p{font-size:24px;font-weight:800;text-align:right;letter-spacing:-.02em;white-space:nowrap;line-height:1.1}
+.it-a{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.it-a button{min-height:36px;padding:4px 12px;font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tag{font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--soft);color:var(--mute);white-space:nowrap}
+.tag.r{background:var(--brick-soft);color:var(--brick)}
+.item.x .it-t,.item.x .it-p{text-decoration:line-through;color:var(--mute)}
+.empty{padding:24px 0;color:var(--mute)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+
+.cols{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 .scroll{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:15px}
-th{text-align:left;font-weight:700;font-size:14px;border-bottom:2px solid var(--ink);padding:8px 8px}
-td{border-bottom:1px solid var(--line);padding:9px 8px;vertical-align:top}
-td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-tr.sec td{background:var(--soft);font-weight:700;border-bottom:1px solid var(--ink)}
-tr.x td{color:var(--mute);text-decoration:line-through}
-tr.x td.keep{text-decoration:none}
-.tag{display:inline-block;font-size:13px;padding:0 7px;border-radius:3px;border:1px solid var(--line);color:var(--mute);margin:2px 4px 0 0;white-space:nowrap}
-.tag.r{border-color:var(--brick);color:var(--brick)}
-.tbtn{min-height:36px;padding:4px 10px;font-size:14px}
-.cols{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
-@media(min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
-.empty{padding:22px 4px;color:var(--mute)}
-details{border-top:1px solid var(--line);padding:10px 0}
+th{text-align:left;font-weight:700;font-size:13px;color:var(--mute);border-bottom:2px solid var(--ink);padding:8px 6px}
+td{border-bottom:1px solid var(--line);padding:9px 6px;vertical-align:top}
+.n{text-align:right;white-space:nowrap}
+tr.sh td{font-weight:700;background:var(--soft)}
+tr.tot td{font-weight:800;border-top:2px solid var(--ink);border-bottom:0}
+details{border-top:1px solid var(--line);padding:12px 0}
+details:first-of-type{border-top:0}
 summary{cursor:pointer;font-weight:700;min-height:32px}
-.rules li{margin-bottom:6px}
-.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:10px 12px 10px 16px;border-radius:5px;display:none;gap:12px;align-items:center;z-index:20;max-width:calc(100% - 32px)}
+.rules{padding-left:20px;margin:8px 0}
+.rules li{margin-bottom:8px}
+footer{color:var(--mute);font-size:14px;padding:28px 0 40px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:10px 10px 10px 16px;border-radius:12px;display:none;gap:12px;align-items:center;z-index:30;max-width:calc(100% - 32px);box-shadow:0 6px 20px rgba(0,0,0,.25)}
 .toast.on{display:flex}
-.toast button{background:transparent;color:var(--panel);border-color:var(--panel);min-height:36px}
-.mini{display:none}
-@media(max-width:899px){.mini{display:flex;position:sticky;top:0;z-index:10;background:var(--ink);color:var(--panel);justify-content:space-between;gap:12px;padding:8px max(4vw,16px);font-size:15px;font-variant-numeric:tabular-nums}.mini b{font-weight:800}}
-
-.foot{font-size:14px;color:var(--mute)}
-@media(max-width:600px){table{font-size:13px}th,td{padding:6px 4px}.stack thead{display:none}.stack tr{display:grid;padding-block:8px;border-bottom:1px solid var(--line)}.stack td{display:flex;justify-content:space-between;gap:12px;border:0;padding:3px 0;text-align:right}.stack td::before{content:attr(data-l);color:var(--mute);text-align:left}.stack td.n{white-space:normal}.stack tr.sec td::before{content:none}.stack td:empty{display:none}}
-@media(prefers-reduced-motion:reduce){.bar i{transition:none}}
+.toast button{background:transparent;color:var(--panel);border-color:color-mix(in srgb,var(--panel) 50%,transparent);min-height:36px}
+@media(max-width:600px){table{font-size:13px}th,td{padding:7px 4px}h2{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.ring circle,.bar i,.mini{transition:none}}
 </style>
-<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').querySelector('thead tr')?.cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
 </head>
 <body>
-<div class="mini" id="mini"><span>Toplam <b id="miniT">0</b> / 100</span><span>Uzm. sonrası <b id="miniP">0</b> / 90</span><span id="miniR">0/8 şart</span></div>
+<div class="mini" id="mini" aria-hidden="true"><span>Toplam <b id="miniT">0</b>/100</span><span>Uzm. sonrası <b id="miniP">0</b>/90</span><span><b id="miniR">0</b>/8 şart</span></div>
 
-<div class="band"><div class="wrap">
-  <div class="head">
-    <div>
-      <h1>Doçentlik puan hesabı</h1>
-      <p class="sub">Sağlık Bilimleri temel alanı, ÜAK Tablo 10 (Mart 2025). İç Hastalıkları başvurusu için: çalışmalarınızı ekleyin, yazar payı, madde tavanları ve zorunlu şartlar kendiliğinden hesaplanır.</p>
-    </div>
-    <div class="status" id="status">Kayıt: <b>hazırlanıyor</b></div>
+<header class="hero" id="hero"><div class="wrap">
+  <div>
+    <h1>Doçentlik puan hesabı</h1>
+    <p class="sub">Sağlık Bilimleri temel alanı, ÜAK Tablo 10 (Mart 2025). Çalışmalarınızı ekleyin; yazar payı, madde tavanları ve zorunlu şartlar kendiliğinden hesaplanır.</p>
+    <div class="status" id="status">Kayıt hazırlanıyor</div>
   </div>
+  <div class="ringbox" aria-live="polite">
+    <div class="ring">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle cx="100" cy="100" r="88" stroke="rgba(255,255,255,.16)" stroke-width="14"/>
+        <circle id="rOut" cx="100" cy="100" r="88" stroke="#ffffff" stroke-width="14" pathLength="100" stroke-dasharray="0 100"/>
+        <circle cx="100" cy="100" r="66" stroke="rgba(255,255,255,.12)" stroke-width="10"/>
+        <circle id="rIn" cx="100" cy="100" r="66" stroke="#ffc2ad" stroke-width="10" pathLength="100" stroke-dasharray="0 100"/>
+      </svg>
+      <div class="c"><div class="t" id="tot">0</div><div class="l">/ 100 puan</div></div>
+    </div>
+    <div class="keys">
+      <div><span><i style="background:#fff"></i>Toplam</span><b id="kT">0 / 100</b></div>
+      <div><span><i style="background:#ffc2ad"></i>Uzmanlık sonrası</span><b id="kP">0 / 90</b></div>
+    </div>
+  </div>
+</div></header>
 
-  <div class="first">
-    <section class="panel res" aria-live="polite">
-      <div class="big">
-        <div><div class="lab">Sayılan toplam puan</div><div class="num" id="tot">0<small> / 100</small></div></div>
-        <div><div class="lab">Uzmanlık sonrası (3. madde hariç)</div><div class="num2" id="post">0<small> / 90</small></div></div>
-      </div>
+<main class="wrap">
+  <div class="grid">
+    <section class="card res">
+      <div class="head"><h2>Zorunlu şartlar</h2></div>
       <p class="verdict" id="verdict"></p>
-      <div class="barbox">
-        <div class="barhead"><span>Toplam, maddelere göre</span><span id="bar1v"></span></div>
-        <div class="bar" id="bar1"></div>
-        <div class="scale" id="sc1"></div>
-        <div class="barhead"><span>Uzmanlık sonrası çalışmalar</span><span id="bar2v"></span></div>
-        <div class="bar" id="bar2"></div>
-        <div class="scale" id="sc2"></div>
-        <div class="legend" id="legend"></div>
-      </div>
       <ul class="reqs" id="reqs"></ul>
+      <div class="barlab"><span>Toplam puanın maddelere dağılımı</span><span class="num" id="barv"></span></div>
+      <div class="bar" id="bar"></div>
+      <div class="legend" id="legend"></div>
     </section>
 
-    <section class="panel form" id="formPanel">
-      <h2 id="formTitle">Çalışma ekle</h2>
-      <p class="hint" style="margin-top:-4px">Seçtikçe aşağıda bu çalışmanın kaç puan getireceğini görürsünüz. Her çalışma yalnız bir maddede puanlanır.</p>
+    <section class="card form" id="formPanel">
+      <div class="head"><h2 id="formTitle">Çalışma ekle</h2></div>
+      <p class="hint" style="margin-top:0">Seçtikçe bu çalışmanın kaç puan getireceğini görürsünüz. Her çalışma yalnız bir maddede puanlanır.</p>
       <label for="fSec">Madde</label>
       <select id="fSec"></select>
       <label for="fBent">Bent</label>
       <select id="fBent"></select>
       <div id="fDyn"></div>
       <label for="fTitle">Kısa ad veya not (isteğe bağlı)</label>
-      <input type="text" id="fTitle" placeholder="Örn. Sarkopeni ve YBÜ mortalitesi, Leuk Res 2026" autocomplete="off">
-      <div class="preview" id="preview"><span class="pv" id="pv">0</span><span class="pf" id="pf"></span></div>
+      <input type="text" id="fTitle" placeholder="Örn. Sarkopeni ve YBÜ mortalitesi, 2026" autocomplete="off">
+      <div class="preview"><span class="pv" id="pv">0</span><span class="pf" id="pf"></span></div>
       <div class="actions">
         <button class="pri" id="bAdd" type="button">Listeye ekle</button>
         <button id="bCancel" type="button" hidden>Vazgeç</button>
       </div>
     </section>
   </div>
-</div></div>
 
-<div class="band" style="padding-top:0"><div class="wrap">
-  <section class="panel" id="listPanel">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline">
-      <h2>Çalışmalarım</h2><span class="foot" id="count"></span>
-    </div>
+  <section class="card sec" id="listPanel">
+    <div class="head"><h2>Çalışmalarım</h2><span class="hint" id="count" style="margin:0"></span></div>
     <div id="sampleBar"></div>
-    <div class="scroll"><table class="stack" id="list"><thead><tr><th>Çalışma</th><th>Bent</th><th>Hesap</th><th class="n">Puan</th><th></th></tr></thead><tbody></tbody></table></div>
-    <div class="actions">
-      <button type="button" id="bCopy">Yedeği kopyala</button>
-      <button type="button" id="bDown">Yedeği dosyaya indir</button>
+    <div id="list"></div>
+    <div class="tools">
+      <button type="button" id="bDown">Yedeği indir</button>
       <button type="button" id="bLoad">Yedekten yükle</button>
+      <button type="button" id="bCopy">Yedeği kopyala</button>
       <input type="file" id="fileIn" accept=".json,application/json" hidden>
       <button type="button" class="q" id="bClear">Tümünü sil</button>
     </div>
-    <p class="hint">Kayıtlar yalnız bu bilgisayardaki bu tarayıcıda (Chrome) saklanır. Tarama verilerini/çerezleri silerseniz ya da gizli pencerede açarsanız görünmez; ara ara yedeği dosyaya indirin.</p>
+    <p class="hint">Kayıtlar yalnız bu cihazdaki bu tarayıcıda saklanır. Site verilerini silerseniz ya da gizli pencerede açarsanız görünmez; ara ara yedek indirin.</p>
   </section>
-</div></div>
 
-<div class="band" style="padding-top:0"><div class="wrap cols">
-  <section class="panel">
-    <h2>Maddelere göre özet</h2>
-    <div class="scroll"><table id="sum"><thead><tr><th>Madde</th><th class="n">Ham</th><th class="n">Tavan</th><th class="n">Sayılan</th><th class="n">Uzm. sonrası</th></tr></thead><tbody></tbody></table></div>
-    <p class="hint" style="margin-top:10px">Ham: eklediklerinizin toplamı. Sayılan: tavan ve alt sınırlar (3g–h, 4c–d en çok 5) uygulandıktan sonraki puan.</p>
-  </section>
-  <section class="panel">
-    <h2>Yazar sayısına göre ne getirir?</h2>
-    <label for="mBent" style="margin-top:0">Yayın türü</label>
-    <select id="mBent"></select>
-    <div class="scroll" style="margin-top:12px"><table id="mat"><thead><tr><th>Yazar sayısı</th><th class="n">Başlıca yazar</th><th class="n">Diğer yazar</th><th class="n">Başlıca belirtilmemiş</th></tr></thead><tbody></tbody></table></div>
-    <p class="hint" style="margin-top:10px">Başlıca yazar: tek yazar, ilk sıradaki yazar ya da danışmanı olduğunuz lisansüstü öğrenciyle yazılan makalede danışman. Sorumlu yazarlık tek başına başlıca yazarlık sayılmaz.</p>
-  </section>
-</div></div>
+  <div class="cols sec">
+    <section class="card">
+      <div class="head"><h2>Maddelere göre özet</h2></div>
+      <div class="scroll"><table id="sum"><thead><tr><th>Madde</th><th class="n">Ham</th><th class="n">Tavan</th><th class="n">Sayılan</th><th class="n">Uzm. s.</th></tr></thead><tbody></tbody></table></div>
+      <p class="hint">Sayılan: tavan ve alt sınırlar (3g–h, 4c–d en çok 5) uygulandıktan sonraki puan. Uzm. s.: uzmanlık sonrası.</p>
+    </section>
+    <section class="card">
+      <div class="head"><h2>Yazar sayısına göre ne getirir?</h2></div>
+      <label for="mBent" style="margin-top:0">Yayın türü</label>
+      <select id="mBent"></select>
+      <div class="scroll" style="margin-top:12px"><table id="mat"><thead><tr><th>Yazar</th><th class="n">Başlıca</th><th class="n">Diğer</th><th class="n">Belirtilmemiş</th></tr></thead><tbody></tbody></table></div>
+      <p class="hint">Başlıca yazar: tek yazar, ilk sıradaki yazar ya da danışmanı olduğunuz lisansüstü öğrenciyle yazılan makalede danışman. Sorumlu yazarlık tek başına sayılmaz.</p>
+    </section>
+  </div>
 
-<div class="band" style="padding-top:0"><div class="wrap">
-  <section class="panel">
-    <h2>Puan cetveli ve kurallar</h2>
-    <details><summary>Tablo 10'daki tüm bentler ve puanları</summary><div class="scroll"><table class="stack" id="ref"><thead><tr><th>Bent</th><th class="n">Puan</th><th>Paylaşım</th></tr></thead><tbody></tbody></table></div></details>
-    <details open><summary>Hesapta uygulanan kurallar</summary>
+  <section class="card sec">
+    <div class="head"><h2>Puan cetveli ve kurallar</h2></div>
+    <details><summary>Tablo 10'daki tüm bentler ve puanları</summary><div class="scroll"><table id="ref"><thead><tr><th>Bent</th><th class="n">Puan</th><th>Paylaşım</th></tr></thead><tbody></tbody></table></div></details>
+    <details><summary>Hesapta uygulanan kurallar</summary>
       <ul class="rules">
         <li>Asgari 100 puan; bunun en az 90'ı uzmanlık unvanından sonraki çalışmalardan (3. madde hariç).</li>
         <li>Makalelerde yazar payı: tek yazar tam puan; iki yazarda başlıca yazar 0,8, ikinci yazar 0,5; üç ve daha fazla yazarda başlıca yazar yarısını alır, diğerleri kalan yarıyı eşit böler; başlıca yazar belirtilmemişse puan eşit bölünür. Kitap, bölüm ve bildiri gibi diğer yayınlarda ve patentte puan kişi sayısına bölünür.</li>
         <li>1. madde: uzmanlık sonrası en az 40 puan ve 1a bendinden (SCIE/SSCI) en az üç makalede başlıca yazarlık.</li>
         <li>2. madde: uzmanlık sonrası en az üç yayın; ikisi TR Dizin (2a), en az ikisinde başlıca yazar.</li>
         <li>3. madde: a–h bentlerinden en az bir yayın; en çok 20 puan, g+h en çok 5. Tıpta uzmanlık tezinden üretilen yayınlar burada değerlendirilir; kendi durumunuzu ÜAK'tan teyit edin.</li>
-        <li>4. madde en çok 20 (c+d en çok 5), aynı kitaptan yalnız bir bölüm sayılır. 5. madde en çok 10, uzmanlık sonrası yayınlara yapılan atıflardan en az 5; kendine atıf sayılmaz. 6: en çok 10, ikinci danışman yarı puan. 7: en çok 20. 8: en çok 10, uzmanlık sonrası en az 5, aynı toplantıdan bir çalışma. 9: en az 2, en çok 6. 11: en çok 25. 12: en çok 4. 13: en çok 10.</li>
+        <li>4. madde en çok 20 (c+d en çok 5), aynı kitaptan yalnız bir bölüm. 5. madde en çok 10, uzmanlık sonrası yayınlara atıftan en az 5; kendine atıf sayılmaz. 6: en çok 10, ikinci danışman yarı puan. 7: en çok 20. 8: en çok 10, uzmanlık sonrası en az 5, aynı toplantıdan bir çalışma. 9: en az 2, en çok 6. 11: en çok 25. 12: en çok 4. 13: en çok 10.</li>
       </ul>
-      <p class="foot">Bu hesap bir ön değerlendirmedir; resmi puanlama ÜAK ve jüri tarafından yapılır. Kriter metninin güncel sürümünü başvuru öncesi uak.gov.tr'den kontrol edin.</p>
     </details>
   </section>
-</div></div>
+  <footer>Bu hesap bir ön değerlendirmedir; resmi puanlama ÜAK ve jüri tarafından yapılır. Kriterlerin güncel sürümünü başvurudan önce uak.gov.tr'den kontrol edin.</footer>
+</main>
 
-<div class="toast" id="toast"><span id="toastT"></span><button type="button" id="toastB">Geri al</button></div>
+<div class="toast" id="toast" role="status"><span id="toastT"></span><button type="button" id="toastB">Geri al</button></div>
 
 <script>
 {
@@ -294,8 +321,8 @@ const S=[
  {k:'13b',l:'13b · İlk 300 üniversitede ≥6 ay yurt dışı faaliyet',p:5,sh:'one'}]}];
 const B={};S.forEach(s=>s.b.forEach(b=>{b.s=s.n;B[b.k]=b}));
 const SEC={};S.forEach(s=>SEC[s.n]=s);
-const COL=['#c8371e','#e8826c','#7d2212','#141210','#6e6862','#a8a29a','#3f3a35','#d9a89c','#57524c','#b5543f','#8f8a83','#2c2825','#cfc9c1'];
-const colOf=n=>n===4?'var(--ink)':COL[n-1];
+const COL=['#b8321d','#e58a6f','#7a1f10','var(--ink)','#8a817a','#c9a227','#4f6d7a','#d9b8ae','#5e5650','#a3543f','#b3aaa2','#3b3632','#e2d9cf'];
+const colOf=n=>COL[n-1];
 const PRJ={yur:['Yürütücü/koordinatör',15],ara:['Araştırmacı',10],dan:['Danışman',5]};
 const ROLE={bas:'Başlıca yazar',diger:'Diğer yazar',esit:'Başlıca belirtilmemiş'};
 const f2=x=>(Math.round(x*100)/100).toLocaleString('tr-TR',{maximumFractionDigits:2});
@@ -308,12 +335,12 @@ function calc(it){
   const b=B[it.k];if(!b)return{p:0,f:''};
   const n=Math.max(1,Math.round(+it.n||1)),q=Math.max(1,Math.round(+it.qty||1));
   switch(b.sh){
-    case 'art':{const s=share(n,it.role);const who=n===1?'tek yazar':ROLE[it.role||'bas'].toLowerCase();return{p:b.p*s,f:`${b.p} × ${f2(s)} (${n} yazar, ${who})`}}
-    case 'eq':return{p:b.p/n,f:n===1?`${b.p} (tek kişi)`:`${b.p} ÷ ${n} kişi`};
+    case 'art':{const s=share(n,it.role);const who=n===1?'tek yazar':ROLE[it.role||'bas'].toLowerCase();return{p:b.p*s,f:`${b.p} × ${f2(s)} · ${n} yazar, ${who}`}}
+    case 'eq':return{p:b.p/n,f:n===1?`${b.p} · tek kişi`:`${b.p} ÷ ${n} kişi`};
     case 'qty':return{p:b.p*q,f:`${b.p} × ${q} adet`};
     case 'adv':{const h=it.adv==='ikinci'?0.5:1;return{p:b.p*q*h,f:`${b.p} × ${q} adet${h<1?' × 0,5 (ikinci danışman)':''}`}}
-    case 'prj':{const r=PRJ[it.prj||'yur'];return{p:r[1],f:`${r[0]}: ${r[1]}`}}
-    default:return{p:b.p,f:`${b.p}`};
+    case 'prj':{const r=PRJ[it.prj||'yur'];return{p:r[1],f:`${r[0]}`}}
+    default:return{p:b.p,f:`Sabit ${b.p} puan`};
   }
 }
 const isBas=it=>B[it.k]?.sh==='art'&&((+it.n||1)<=1||it.role==='bas');
@@ -341,54 +368,53 @@ function evaluate(items){
   const s3=use.filter(i=>/^3[a-h]$/.test(i.k)).length;
   const R=[
     {t:'Toplam en az 100 puan',v:total,need:100,ok:total>=100,d:total>=100?'Sağlandı':`${f2(100-total)} puan eksik`},
-    {t:'Uzmanlık sonrası en az 90 puan',v:post,need:90,ok:post>=90,d:post>=90?'3. madde hariç sayıldı':`${f2(90-post)} puan eksik (3. madde hariç)`},
-    {t:'1. madde: 40 puan ve 3 başlıca yazarlı SCIE/SSCI',v:sec[1].pc,need:40,ok:sec[1].pc>=40&&a1>=3,d:`Puan ${f2(sec[1].pc)}/40 · 1a başlıca yazar ${a1}/3`},
+    {t:'Uzmanlık sonrası en az 90 puan',v:post,need:90,ok:post>=90,d:post>=90?'Sağlandı (3. madde hariç)':`${f2(90-post)} puan eksik (3. madde hariç)`},
+    {t:'1. madde: 40 puan, 3 başlıca yazarlı SCIE/SSCI',v:Math.min(sec[1].pc,40)/40*0.7+Math.min(a1,3)/3*0.3,need:1,ok:sec[1].pc>=40&&a1>=3,d:`Puan ${f2(sec[1].pc)}/40 · başlıca yazar ${a1}/3`},
     {t:'2. madde: 3 yayın, 2 TR Dizin, 2 başlıca',v:Math.min(s2.length,3)+Math.min(s2a,2)+Math.min(s2b,2),need:7,ok:s2.length>=3&&s2a>=2&&s2b>=2,d:`Yayın ${s2.length}/3 · TR Dizin ${s2a}/2 · başlıca ${s2b}/2`},
-    {t:'3. madde: tezden en az bir yayın (a–h)',v:Math.min(s3,1),need:1,ok:s3>=1,d:s3>=1?`${s3} yayın`:'Uzmanlık tezinden üretilmiş yayın yok'},
-    {t:'5. madde: atıftan en az 5 puan',v:sec[5].pc,need:5,ok:sec[5].pc>=5,d:`Uzmanlık sonrası yayınlara atıf ${f2(sec[5].pc)}/5`},
-    {t:'8. madde: bildiriden en az 5 puan',v:sec[8].pc,need:5,ok:sec[8].pc>=5,d:`Uzmanlık sonrası ${f2(sec[8].pc)}/5`},
-    {t:'9. madde: eğitim-öğretimden en az 2 puan',v:sec[9].c,need:2,ok:sec[9].c>=2,d:`${f2(sec[9].c)}/2`}];
+    {t:'3. madde: tezden en az bir yayın',v:Math.min(s3,1),need:1,ok:s3>=1,d:s3>=1?`${s3} yayın`:'Uzmanlık tezinden üretilmiş yayın yok'},
+    {t:'5. madde: atıftan en az 5 puan',v:sec[5].pc,need:5,ok:sec[5].pc>=5,d:`${f2(sec[5].pc)}/5 (uzmanlık sonrası yayınlara)`},
+    {t:'8. madde: bildiriden en az 5 puan',v:sec[8].pc,need:5,ok:sec[8].pc>=5,d:`${f2(sec[8].pc)}/5 (uzmanlık sonrası)`},
+    {t:'9. madde: eğitimden en az 2 puan',v:sec[9].c,need:2,ok:sec[9].c>=2,d:`${f2(sec[9].c)}/2`}];
   return{ex,sec,total,post,R};
 }
 
 /* ---------- state ---------- */
 const SAMPLE=[
- {k:'1a2',n:5,role:'bas',title:'Örnek: SCIE Q2 özgün makale, 5 yazar, ilk isim',post:true},
- {k:'1a3',n:4,role:'diger',title:'Örnek: SCIE Q3 makale, 4 yazar, üçüncü isim',post:true},
- {k:'2a',n:3,role:'bas',title:'Örnek: TR Dizin makale, 3 yazar, ilk isim',post:true},
+ {k:'1a2',n:5,role:'bas',title:'Örnek: SCIE Q2 özgün makale, ilk isim',post:true},
+ {k:'1a3',n:4,role:'diger',title:'Örnek: SCIE Q3 makale, üçüncü isim',post:true},
+ {k:'2a',n:3,role:'bas',title:'Örnek: TR Dizin makale, ilk isim',post:true},
  {k:'3a',n:4,role:'bas',title:'Örnek: uzmanlık tezinden SCIE makale',post:true},
- {k:'4b',n:2,title:'Örnek: BKCI kitapta bölüm, 2 yazar',grp:'Örnek kitap',post:true},
+ {k:'4b',n:2,title:'Örnek: BKCI kitapta bölüm',grp:'Örnek kitap',post:true},
  {k:'5a',qty:4,title:'Örnek: Web of Science atıfları',post:true},
- {k:'8b',n:3,title:'Örnek: ulusal kongre sözlü bildiri',grp:'Ulusal İç Hastalıkları Kongresi',post:true},
+ {k:'8b',n:3,title:'Örnek: ulusal kongre sözlü bildiri',grp:'Ulusal Dahiliye Kongresi',post:true},
  {k:'9c',title:'Örnek: kadrolu eğitim görevi',post:true}].map(o=>({id:uid(),sample:true,...o}));
-let items=[],editId=null,lastUndo=null;
 const LK='docentlik-puan-v1';
-function loadLocal(){try{const j=JSON.parse(localStorage.getItem(LK)||'null');if(j&&Array.isArray(j.items))return j.items}catch(e){}return null}
-let mode='local';
-function setStatus(t){$('status').innerHTML='Kayıt: <b>'+esc(t)+'</b>'}
+let items=[],editId=null,lastUndo=null,mode='local';
+function loadLocal(){try{const j=JSON.parse(localStorage.getItem(LK)||'null');if(j&&Array.isArray(j.items))return j}catch(e){}return null}
+function setStatus(t,warn){const s=$('status');s.textContent=t;s.classList.toggle('warn',!!warn)}
 const hm=d=>d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
 function save(){
-  try{localStorage.setItem(LK,JSON.stringify({items,updated:new Date().toISOString()}));setStatus('bu tarayıcıda kayıtlı · '+hm(new Date()))}
-  catch(e){setStatus('kaydedilemedi, yedeği indirin')}
+  try{localStorage.setItem(LK,JSON.stringify({items,updated:new Date().toISOString()}));setStatus('Bu tarayıcıda kayıtlı · '+hm(new Date()))}
+  catch(e){setStatus('Kaydedilemedi, yedeği indirin',true)}
 }
-items=loadLocal()||SAMPLE;
+const stored=loadLocal();items=stored?stored.items:SAMPLE;
 try{localStorage.setItem(LK+'-t','1');localStorage.removeItem(LK+'-t')}catch(e){mode='none'}
 
 /* ---------- form ---------- */
 const fSec=$('fSec'),fBent=$('fBent'),fDyn=$('fDyn');
 fSec.innerHTML=S.map(s=>`<option value="${s.n}">${s.n}. ${esc(s.t)}${s.cap!=null?` (en çok ${s.cap})`:''}</option>`).join('');
 let draft={k:'1a1',n:3,role:'bas',qty:1,adv:'asil',prj:'yur',post:true,grp:''};
-function fillBents(){const s=SEC[+fSec.value];fBent.innerHTML=s.b.map(b=>`<option value="${b.k}">${esc(b.l)} · ${b.p} puan</option>`).join('');}
+function fillBents(){const s=SEC[+fSec.value];fBent.innerHTML=s.b.map(b=>`<option value="${b.k}">${esc(b.l)} · ${b.p} puan</option>`).join('')}
 function segBtns(name,opts,cur){return `<div class="seg" role="group">${opts.map(([v,l])=>`<button type="button" data-seg="${name}" data-v="${v}" aria-pressed="${cur===v}">${l}</button>`).join('')}</div>`}
 function renderDyn(){
   const b=B[draft.k];let h='';
   if(b.sh==='art'||b.sh==='eq'){
     h+=`<label for="fN">${b.s===10?'Buluşu paylaşan kişi sayısı':'Yazar sayısı'}</label><input type="number" id="fN" min="1" max="200" inputmode="numeric" value="${draft.n}">`;
-    if(b.sh==='art'&&(+draft.n||1)>1){h+=`<label>Bu makaledeki rolünüz</label>`+segBtns('role',[['bas','Başlıca yazar'],['diger','Diğer yazar'],['esit','Başlıca belirtilmemiş']],draft.role)+`<p class="hint">Başlıca yazar: ilk isim ya da danışmanı olduğunuz lisansüstü öğrenciyle yazılmış makale.</p>`}
+    if(b.sh==='art'&&(+draft.n||1)>1){h+=`<label>Bu makaledeki rolünüz</label>`+segBtns('role',[['bas','Başlıca yazar'],['diger','Diğer yazar'],['esit','Belirtilmemiş']],draft.role)+`<p class="hint">Başlıca yazar: ilk isim ya da danışmanı olduğunuz lisansüstü öğrenciyle yazılmış makale.</p>`}
   }
   if(b.sh==='qty'||b.sh==='adv')h+=`<label for="fQ">${b.s===5?'Atıf sayısı':'Adet'}</label><input type="number" id="fQ" min="1" max="999" inputmode="numeric" value="${draft.qty}">${b.s===5?'<p class="hint">Kendinize yaptığınız atıflar sayılmaz; aynı yayındaki birden çok atıf tek atıftır.</p>':b.s===9?'<p class="hint">Her dört farklı yarıyıl (ya da iki farklı yıl) bir adettir.</p>':''}`;
   if(b.sh==='adv')h+=`<label>Danışmanlık</label>`+segBtns('adv',[['asil','Asıl danışman'],['ikinci','İkinci / eş danışman']],draft.adv);
-  if(b.sh==='prj')h+=`<label>Projedeki rolünüz</label>`+segBtns('prj',[['yur','Yürütücü (15)'],['ara','Araştırmacı (10)'],['dan','Danışman (5)']],draft.prj);
+  if(b.sh==='prj')h+=`<label>Projedeki rolünüz</label>`+segBtns('prj',[['yur','Yürütücü · 15'],['ara','Araştırmacı · 10'],['dan','Danışman · 5']],draft.prj);
   if(b.grp)h+=`<label for="fG">${b.grp}</label><input type="text" id="fG" value="${esc(draft.grp)}" autocomplete="off"><p class="hint">${b.s===4?'Aynı kitaptan yalnız bir bölüm puanlanır.':'Aynı toplantıdan yalnız bir çalışma puanlanır.'}</p>`;
   if(b.s!==9&&b.s!==3)h+=`<label class="chk"><input type="checkbox" id="fP" ${draft.post?'checked':''}> ${b.s===5?'Uzmanlık sonrası yayınıma yapılan atıf':'Uzmanlık unvanından sonra yayımlandı / yapıldı'}</label>`;
   if(b.s===3)h+=`<p class="note">3. maddedeki puanlar uzmanlık sonrası 90 puan şartına katılmaz; madde en çok 20 puan getirir.</p>`;
@@ -397,7 +423,7 @@ function renderDyn(){
 function readDyn(){const n=$('fN'),q=$('fQ'),g=$('fG'),p=$('fP');if(n)draft.n=Math.max(1,parseInt(n.value)||1);if(q)draft.qty=Math.max(1,parseInt(q.value)||1);if(g)draft.grp=g.value;if(p)draft.post=p.checked;draft.title=$('fTitle').value}
 function renderPreview(){
   readDyn();const r=calc(draft),b=B[draft.k],s=SEC[b.s];
-  const now=evaluate(items.filter(i=>i.id!==editId)),after=evaluate([...items.filter(i=>i.id!==editId),{...draft,id:'__d'}]);
+  const base=items.filter(i=>i.id!==editId),now=evaluate(base),after=evaluate([...base,{...draft,id:'__d'}]);
   const gain=after.total-now.total;
   $('pv').textContent=f2(r.p)+' puan';
   $('pf').innerHTML=esc(r.f)+`<br>Toplamınıza katkısı şu an: <b>+${f2(gain)}</b>${gain<r.p-1e-9?(s.cap!=null?` (madde tavanı ${s.cap})`:' (aynı kitap/toplantı)'):''}`;
@@ -407,7 +433,7 @@ fBent.addEventListener('change',()=>{draft.k=fBent.value;renderDyn()});
 fDyn.addEventListener('input',e=>{if(e.target.id==='fN'){readDyn();const b=B[draft.k];if(b.sh==='art'&&((+draft.n>1)!==!!fDyn.querySelector('[data-seg=role]'))){renderDyn();$('fN').focus();return}}renderPreview()});
 fDyn.addEventListener('click',e=>{const t=e.target.closest('[data-seg]');if(!t)return;readDyn();draft[t.dataset.seg]=t.dataset.v;renderDyn()});
 $('fTitle').addEventListener('input',()=>{draft.title=$('fTitle').value});
-function resetForm(keepBent){editId=null;$('formTitle').textContent='Çalışma ekle';$('bAdd').textContent='Listeye ekle';$('bCancel').hidden=true;$('fTitle').value='';draft={...draft,title:'',grp:'',qty:1,id:undefined};if(!keepBent){}renderDyn()}
+function resetForm(){editId=null;$('formTitle').textContent='Çalışma ekle';$('bAdd').textContent='Listeye ekle';$('bCancel').hidden=true;$('fTitle').value='';draft={...draft,title:'',grp:'',qty:1};renderDyn()}
 $('bAdd').addEventListener('click',()=>{
   readDyn();const rec={id:editId||uid(),k:draft.k,title:(draft.title||'').trim()};const b=B[draft.k];
   if(b.sh==='art'||b.sh==='eq'){rec.n=draft.n;if(b.sh==='art')rec.role=draft.n>1?draft.role:'bas'}
@@ -415,9 +441,9 @@ $('bAdd').addEventListener('click',()=>{
   rec.post=b.s===9?true:draft.post!==false;
   if(editId){items=items.map(i=>i.id===editId?rec:i);toast('Kayıt güncellendi')}
   else{const hadSample=items.some(i=>i.sample);if(hadSample){lastUndo=items;items=items.filter(i=>!i.sample)}items.push(rec);toast(hadSample?'Eklendi, örnek kayıtlar kaldırıldı':'Listeye eklendi',hadSample)}
-  resetForm(true);save();renderAll();
+  resetForm();save();renderAll();
 });
-$('bCancel').addEventListener('click',()=>{resetForm(true);renderPreview()});
+$('bCancel').addEventListener('click',()=>{resetForm()});
 function startEdit(id){
   const it=items.find(i=>i.id===id);if(!it)return;editId=id;const b=B[it.k];
   fSec.value=b.s;fillBents();fBent.value=it.k;
@@ -431,71 +457,63 @@ let toastT;function toast(t,undo){$('toastT').textContent=t;$('toastB').hidden=!
 $('toastB').addEventListener('click',()=>{if(lastUndo){items=lastUndo;lastUndo=null;save();renderAll();$('toast').classList.remove('on')}});
 
 /* ---------- render ---------- */
-function bars(E){
-  const max1=Math.max(120,Math.ceil(E.total/10)*10),max2=Math.max(110,Math.ceil(E.post/10)*10);
-  const seg=(key,max)=>S.map(s=>{const v=key==='c'?E.sec[s.n].c:(s.n===3?0:E.sec[s.n].pc);return v>0?`<i style="width:${v/max*100}%;background:${colOf(s.n)}" title="${s.n}. ${esc(s.t)}: ${f2(v)}"></i>`:''}).join('');
-  $('bar1').innerHTML=seg('c',max1)+`<span class="tick" style="left:${100/max1*100}%"></span>`;
-  $('bar2').innerHTML=seg('pc',max2)+`<span class="tick" style="left:${90/max2*100}%"></span>`;
-  const sc=(max,mark)=>[0,mark,max].map(v=>`<span style="left:${v/max*100}%;${v===0?'transform:none':v===max?'transform:translateX(-100%)':''}">${v}</span>`).join('');
-  $('sc1').innerHTML=sc(max1,100);$('sc2').innerHTML=sc(max2,90);
-  $('bar1v').textContent=f2(E.total);$('bar2v').textContent=f2(E.post);
-  const lg=S.filter(s=>E.sec[s.n].c>0).map(s=>`<span><em style="background:${colOf(s.n)}"></em>${s.n}. ${esc(s.t)} <b>${f2(E.sec[s.n].c)}</b></span>`).join('');
-  $('legend').innerHTML=lg||'<span class="foot">Henüz puanlanan çalışma yok.</span>';
-}
 function renderAll(){
   const E=evaluate(items);const okN=E.R.filter(r=>r.ok).length;
-  $('tot').innerHTML=f2(E.total)+'<small> / 100</small>';$('post').innerHTML=f2(E.post)+'<small> / 90</small>';
-  $('miniT').textContent=f2(E.total);$('miniP').textContent=f2(E.post);$('miniR').textContent=okN+'/8 şart';
-  const v=$('verdict');if(okN===8){v.className='verdict';v.textContent='Bu listeyle tüm asgari şartlar sağlanıyor.'}else{v.className='verdict no';v.textContent=`8 şartın ${okN} tanesi sağlandı; ${8-okN} şart eksik.`}
-  bars(E);
-  $('reqs').innerHTML=E.R.map(r=>`<li class="${r.ok?'ok':'no'}"><span class="mk" aria-hidden="true">${r.ok?'✓':''}</span><div class="rq"><b>${esc(r.t)}</b><div>${esc(r.d)}</div></div><span class="rv">${r.ok?'Tamam':'Eksik'}</span><span class="meter" aria-hidden="true"><i style="width:${Math.min(100,r.v/r.need*100)}%"></i></span></li>`).join('');
+  $('tot').textContent=f2(E.total);$('kT').textContent=`${f2(E.total)} / 100`;$('kP').textContent=`${f2(E.post)} / 90`;
+  $('rOut').setAttribute('stroke-dasharray',`${Math.min(E.total,100)} 100`);
+  $('rIn').setAttribute('stroke-dasharray',`${Math.min(E.post/90*100,100)} 100`);
+  $('miniT').textContent=f2(E.total);$('miniP').textContent=f2(E.post);$('miniR').textContent=okN;
+  const v=$('verdict');if(okN===8){v.className='verdict';v.textContent='Bu listeyle tüm asgari şartlar sağlanıyor.'}else{v.className='verdict no';v.textContent=`8 şartın ${okN} tanesi sağlandı, ${8-okN} şart eksik.`}
+  $('reqs').innerHTML=E.R.map(r=>`<li class="${r.ok?'ok':'no'}"><span class="mk" aria-hidden="true">${r.ok?'✓':''}</span><div class="rq"><b>${esc(r.t)}</b><div>${esc(r.d)}</div></div><span class="meter" aria-hidden="true"><i style="width:${Math.min(100,r.v/r.need*100)}%"></i></span></li>`).join('');
+  const max=Math.max(100,E.total);
+  $('bar').innerHTML=S.map(s=>E.sec[s.n].c>0?`<i style="width:${E.sec[s.n].c/max*100}%;background:${colOf(s.n)}" title="${s.n}. ${esc(s.t)}: ${f2(E.sec[s.n].c)}"></i>`:'').join('');
+  $('barv').textContent=`${f2(E.total)} / 100`;
+  $('legend').innerHTML=S.filter(s=>E.sec[s.n].c>0).map(s=>`<span><em style="background:${colOf(s.n)}"></em>${s.n}. ${esc(s.t)} <b>${f2(E.sec[s.n].c)}</b></span>`).join('')||'<span>Henüz puanlanan çalışma yok.</span>';
   // list
-  const tb=$('list').tBodies[0];
-  if(!items.length){tb.innerHTML=`<tr><td colspan="5" class="empty">Henüz çalışma eklenmedi. Yukarıdaki formdan ilk yayınınızı ekleyin.</td></tr>`}
-  else tb.innerHTML=S.filter(s=>items.some(i=>B[i.k]?.s===s.n)).map(s=>{
+  if(!items.length)$('list').innerHTML=`<p class="empty">Henüz çalışma eklenmedi. Yukarıdaki formdan ilk yayınınızı ekleyin.</p>`;
+  else $('list').innerHTML=S.filter(s=>items.some(i=>B[i.k]?.s===s.n)).map(s=>{
     const L=items.filter(i=>B[i.k]?.s===s.n),st=E.sec[s.n];
-    const head=`<tr class="sec"><td colspan="3">${s.n}. ${esc(s.t)}${s.cap!=null?` · tavan ${s.cap}`:''}</td><td class="n">${f2(st.c)}${st.raw-st.c>1e-9?` <span class="tag r">ham ${f2(st.raw)}</span>`:''}</td><td></td></tr>`;
-    return head+L.map(it=>{const r=calc(it),x=E.ex.has(it.id);const tags=[it.sample?'<span class="tag r">örnek</span>':'',s.n!==9&&s.n!==3&&it.post===false?'<span class="tag">uzmanlık öncesi</span>':'',isBas(it)&&(+it.n||1)>1?'<span class="tag">başlıca</span>':'',x?'<span class="tag r">aynı '+(s.n===4?'kitap':'toplantı')+', sayılmıyor</span>':'',it.grp?`<span class="tag">${esc(it.grp)}</span>`:''].join('');
-      return `<tr class="${x?'x':''}"><td class="keep">${esc(it.title||'Adsız kayıt')}<br>${tags}</td><td>${esc(B[it.k].l)}</td><td>${esc(r.f)}</td><td class="n">${f2(r.p)}</td><td class="keep" style="white-space:nowrap"><button class="tbtn" type="button" data-ed="${it.id}">Düzenle</button> <button class="tbtn" type="button" data-del="${it.id}">Sil</button></td></tr>`}).join('');
+    const head=`<div class="grph"><b>${s.n}. ${esc(s.t)}</b><span class="gp">${f2(st.c)}${s.cap!=null?`<small style="color:var(--mute)">/ ${s.cap}</small>`:''}${st.raw-st.c>1e-9?`<small>ham ${f2(st.raw)}</small>`:''}</span></div>`;
+    return `<div class="grp">${head}${L.map(it=>{const r=calc(it),x=E.ex.has(it.id);
+      const tags=[it.sample?'<span class="tag r">örnek</span>':'',s.n!==9&&s.n!==3&&it.post===false?'<span class="tag">uzmanlık öncesi</span>':'',isBas(it)&&(+it.n||1)>1?'<span class="tag">başlıca yazar</span>':'',x?`<span class="tag r">aynı ${s.n===4?'kitap':'toplantı'}, sayılmıyor</span>`:'',it.grp?`<span class="tag">${esc(it.grp)}</span>`:''].join('');
+      return `<div class="item${x?' x':''}"><div><div class="it-t">${esc(it.title||'Adsız kayıt')}</div><div class="it-m">${esc(B[it.k].l)}</div><div class="it-m">${esc(r.f)}</div>${tags?`<div class="tags">${tags}</div>`:''}</div><div class="it-p">${f2(r.p)}</div><div class="it-a"><button type="button" data-ed="${it.id}">Düzenle</button><button type="button" data-del="${it.id}">Sil</button></div></div>`}).join('')}</div>`;
   }).join('');
-  const real=items.filter(i=>!i.sample).length,smp=items.length-real;
+  const smp=items.filter(i=>i.sample).length;
   $('count').textContent=items.length?`${items.length} kayıt`:'';
-  $('sampleBar').innerHTML=smp?`<div class="samplebar"><span>Listede ${smp} örnek kayıt var. İlk kendi kaydınızı eklediğinizde kaldırılır.</span><button type="button" id="bRmS">Örnekleri şimdi kaldır</button></div>`:'';
-  // summary
-  $('sum').tBodies[0].innerHTML=S.map(s=>{const st=E.sec[s.n];return `<tr><td>${s.n}. ${esc(s.t)}</td><td class="n">${f2(st.raw)}</td><td class="n">${s.cap??'—'}</td><td class="n"><b>${f2(st.c)}</b></td><td class="n">${s.n===3?'sayılmaz':f2(st.pc)}</td></tr>`}).join('')+`<tr><td><b>Toplam</b></td><td class="n">${f2(S.reduce((a,s)=>a+E.sec[s.n].raw,0))}</td><td class="n"></td><td class="n"><b>${f2(E.total)}</b></td><td class="n"><b>${f2(E.post)}</b></td></tr>`;
+  $('sampleBar').innerHTML=smp?`<div class="samplebar"><span>Listede ${smp} örnek kayıt var. İlk kendi kaydınızı eklediğinizde kaldırılır.</span><button type="button" id="bRmS">Örnekleri kaldır</button></div>`:'';
+  $('sum').tBodies[0].innerHTML=S.map(s=>{const st=E.sec[s.n];return `<tr><td>${s.n}. ${esc(s.t)}</td><td class="n">${f2(st.raw)}</td><td class="n">${s.cap??'—'}</td><td class="n"><b>${f2(st.c)}</b></td><td class="n">${s.n===3?'—':f2(st.pc)}</td></tr>`}).join('')+`<tr class="tot"><td>Toplam</td><td class="n">${f2(S.reduce((a,s)=>a+E.sec[s.n].raw,0))}</td><td></td><td class="n">${f2(E.total)}</td><td class="n">${f2(E.post)}</td></tr>`;
   renderPreview();
 }
 $('list').addEventListener('click',e=>{const d=e.target.closest('[data-del]'),ed=e.target.closest('[data-ed]');
-  if(d){lastUndo=items;const it=items.find(i=>i.id===d.dataset.del);items=items.filter(i=>i.id!==d.dataset.del);if(editId===d.dataset.del)resetForm(true);save();renderAll();toast(`“${it?.title||'Kayıt'}” silindi`,true)}
+  if(d){lastUndo=items;const it=items.find(i=>i.id===d.dataset.del);items=items.filter(i=>i.id!==d.dataset.del);if(editId===d.dataset.del)resetForm();save();renderAll();toast(`“${it?.title||'Kayıt'}” silindi`,true)}
   if(ed)startEdit(ed.dataset.ed)});
 $('sampleBar').addEventListener('click',e=>{if(e.target.id==='bRmS'){lastUndo=items;items=items.filter(i=>!i.sample);save();renderAll();toast('Örnek kayıtlar kaldırıldı',true)}});
 
 /* matrix + reference */
-const mB=$('mBent');const artB=Object.values(B).filter(b=>b.sh==='art');
-mB.innerHTML=artB.map(b=>`<option value="${b.k}">${esc(b.l)} · ${b.p}</option>`).join('');
-function renderMat(){const b=B[mB.value];$('mat').tBodies[0].innerHTML=[1,2,3,4,5,6,7,8,10].map(n=>{const c=(r)=>f2(b.p*share(n,r));return n===1?`<tr><td>1 (tek yazar)</td><td class="n"><b>${f2(b.p)}</b></td><td class="n">—</td><td class="n">—</td></tr>`:`<tr><td>${n}</td><td class="n"><b>${c('bas')}</b></td><td class="n">${c('diger')}</td><td class="n">${c('esit')}</td></tr>`}).join('')}
+const mB=$('mBent');
+mB.innerHTML=Object.values(B).filter(b=>b.sh==='art').map(b=>`<option value="${b.k}">${esc(b.l)} · ${b.p}</option>`).join('');
+function renderMat(){const b=B[mB.value];$('mat').tBodies[0].innerHTML=[1,2,3,4,5,6,7,8,10].map(n=>{const c=r=>f2(b.p*share(n,r));return n===1?`<tr><td>1 (tek)</td><td class="n"><b>${f2(b.p)}</b></td><td class="n">—</td><td class="n">—</td></tr>`:`<tr><td>${n}</td><td class="n"><b>${c('bas')}</b></td><td class="n">${c('diger')}</td><td class="n">${c('esit')}</td></tr>`}).join('')}
 mB.addEventListener('change',renderMat);
 const SHL={art:'Makale kuralı',eq:'Kişi sayısına bölünür',qty:'Adet başına',adv:'Adet başına, ikinci danışman yarı',prj:'Role göre 15 / 10 / 5',one:'Sabit'};
-$('ref').tBodies[0].innerHTML=S.map(s=>`<tr class="sec"><td colspan="3">${s.n}. ${esc(s.t)}${s.cap!=null?` · en çok ${s.cap}`:''}</td></tr>`+s.b.map(b=>`<tr><td>${esc(b.l)}</td><td class="n">${b.p}</td><td>${SHL[b.sh]}</td></tr>`).join('')).join('');
+$('ref').tBodies[0].innerHTML=S.map(s=>`<tr class="sh"><td colspan="3">${s.n}. ${esc(s.t)}${s.cap!=null?` · en çok ${s.cap}`:''}</td></tr>`+s.b.map(b=>`<tr><td>${esc(b.l)}</td><td class="n">${b.p}</td><td>${SHL[b.sh]}</td></tr>`).join('')).join('');
 
 /* backup */
 const backup=()=>JSON.stringify({uygulama:'Doçentlik puan hesabı',tarih:new Date().toISOString(),items},null,1);
-$('bCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(backup());toast('Yedek panoya kopyalandı')}catch(e){toast('Kopyalanamadı; "Yedeği dosyaya indir"i deneyin')}});
-$('bDown').addEventListener('click',async()=>{
-  const name='docentlik-puan-yedek-'+new Date().toISOString().slice(0,10)+'.json',data=backup();
-  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast('Yedek indirildi')}catch(e){toast('İndirilemedi; yedeği kopyalayın')}
-});
+$('bCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(backup());toast('Yedek panoya kopyalandı')}catch(e){toast('Kopyalanamadı; "Yedeği indir"i deneyin')}});
+$('bDown').addEventListener('click',()=>{try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([backup()],{type:'application/json'}));a.download='docentlik-puan-yedek-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();toast('Yedek indirildi')}catch(e){toast('İndirilemedi; yedeği kopyalayın')}});
 $('bLoad').addEventListener('click',()=>$('fileIn').click());
 $('fileIn').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const arr=Array.isArray(j)?j:j.items;if(!Array.isArray(arr))throw 0;lastUndo=items;items=arr.filter(i=>i&&B[i.k]).map(i=>({...i,id:i.id||uid()}));save();renderAll();toast(`${items.length} kayıt yüklendi`,true)}catch(err){toast('Dosya okunamadı: geçerli bir yedek değil')}e.target.value=''});
-let clearArm=false;$('bClear').addEventListener('click',()=>{if(!clearArm){clearArm=true;$('bClear').textContent='Emin misiniz? Tekrar tıklayın';setTimeout(()=>{clearArm=false;$('bClear').textContent='Tümünü sil'},4000);return}clearArm=false;$('bClear').textContent='Tümünü sil';lastUndo=items;items=[];save();renderAll();toast('Tüm kayıtlar silindi',true)});
+let clearArm=false;$('bClear').addEventListener('click',()=>{if(!clearArm){clearArm=true;$('bClear').textContent='Emin misiniz? Tekrar dokunun';setTimeout(()=>{clearArm=false;$('bClear').textContent='Tümünü sil'},4000);return}clearArm=false;$('bClear').textContent='Tümünü sil';lastUndo=items;items=[];save();renderAll();toast('Tüm kayıtlar silindi',true)});
+
+/* sticky mini bar when hero leaves view */
+try{const io=new IntersectionObserver(es=>{const on=!es[0].isIntersecting;$('mini').classList.toggle('on',on);$('mini').setAttribute('aria-hidden',String(!on))},{threshold:0});io.observe($('hero'))}catch(e){}
 
 /* boot */
 fSec.value='1';fillBents();fBent.value='1a1';renderDyn();renderMat();renderAll();
-if(mode==='none')setStatus('tarayıcı depolaması kapalı, yedeği indirin');
-else{let u=null;try{u=JSON.parse(localStorage.getItem(LK)||'null')?.updated}catch(e){}setStatus(u?'bu tarayıcıda kayıtlı · '+new Date(u).toLocaleString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'bu tarayıcıda kaydedilecek')}
-// Chrome'dan kalıcı depolama iste: disk dolsa bile veriler kendiliğinden silinmesin
+if(mode==='none')setStatus('Tarayıcı depolaması kapalı, yedeği indirin',true);
+else if(stored&&stored.updated)setStatus('Bu tarayıcıda kayıtlı · '+new Date(stored.updated).toLocaleString('tr-TR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}));
+else setStatus('Değişiklikler bu tarayıcıda saklanır');
 try{navigator.storage?.persist?.()}catch(e){}
-// Aynı sayfa başka sekmede açıksa listeyi eşitle
 window.addEventListener('storage',e=>{if(e.key!==LK||!e.newValue)return;try{const j=JSON.parse(e.newValue);if(Array.isArray(j.items)){items=j.items;renderAll()}}catch(err){}});
 }
 </script>
